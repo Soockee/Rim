@@ -62,13 +62,22 @@ func (s *Server) createServeMux() http.Handler {
 }
 
 func (s *Server) home(w http.ResponseWriter, r *http.Request) {
-	s.logger.For(r.Context()).Info("HTTP", zap.String("method", r.Method), zap.Stringer("url", r.URL))
-	b, err := s.assetFs.Asset("web_assets/index.html")
-	if err != nil {
-		http.Error(w, "Could not load index page", http.StatusInternalServerError)
-		s.logger.Bg().Error("Could lot load static assets", zap.Error(err))
+	if r.URL.String() == "/" {
+		s.logger.For(r.Context()).Info("HTTP", zap.String("method", r.Method), zap.Stringer("url", r.URL))
+		b, err := s.assetFs.Asset("web_assets/index.html")
+		if err != nil {
+			http.Error(w, "Could not load index page", http.StatusInternalServerError)
+			s.logger.Bg().Error("Could lot load static assets", zap.Error(err))
+		}
+		w.Write(b)
+	} else {
+		b, err := s.assetFs.Asset("web_assets" + r.URL.String())
+		if err != nil {
+			http.Error(w, "Could not load resource", http.StatusInternalServerError)
+			s.logger.Bg().Error("Could lot load static assets resource", zap.Error(err))
+		}
+		w.Write(b)
 	}
-	w.Write(b)
 }
 
 func (s *Server) dispatch(w http.ResponseWriter, r *http.Request) {
