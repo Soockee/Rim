@@ -2,7 +2,8 @@
 // LIBRARY CLASS 
 
 // REQUIREMENTS
-// - jquery.js
+// - bootstrap.js 4.0
+// - jquery.js 3.1.1
 // - jstat.js
 // - plotly.js
 
@@ -13,8 +14,10 @@ function MakeRequests(opt) {
   //CONFIG
   //buttonName: name of the class of buttons to click
   //putMeHere: class of the div where to append library-generated HTML
+  //varName: name given to the MakeRequests instance
   var buttonName = opt.buttonClassName,
     putMeHere = opt.putMeHereClassName,
+    varName = opt.varName,
     //Functions config
     beta = true, //false,
     chisquare = true, //false,
@@ -33,6 +36,8 @@ function MakeRequests(opt) {
     firebtn;
   
   //UTILITIES functions
+  
+  //Retrieve forms data as dictionary
   var getDataObj = function () {
     
     var dataArray = $('form.form-inline').serializeArray(),
@@ -46,13 +51,30 @@ function MakeRequests(opt) {
     
   };
   
+  //CSS style for the library elements
+  var setCSS = function () {
+    
+    var node = document.createElement('style');
+    node.innerHTML = ".putMeHere {background:#ffcccc} .distr-button { background:#ff8080; border-color:#ff6666; } .distr-button:focus, .distr-button:hover { background:#ff6666; border-color:#ff6666; outline: none !important; box-shadow: none;} .fire-btn{background:#cc0000; border-color:#b30000;} .fire-btn:focus, .fire-btn:hover {background:#b30000; border-color:#b30000; outline: none !important; box-shadow: none;} .no-bottom-margin {margin-bottom: 0px;}}";
+    document.body.appendChild(node);
+    
+  };
+  
   //INITIALIZATION function
   this.build = function () {
     
-    this.setCSS();
-
+    //Add CSS style
+    setCSS();
+    
+    //Retrieve array of elements to be clicked
     buttons = document.getElementsByClassName(buttonName);
+    //Retrieve container where to append library-generated HTML
     el = document.getElementsByClassName(putMeHere)[0];
+    
+    //Generate HTML
+    //FORM
+    //- Number of Requests: number of requests to generate
+    //- Selection button: button to click / click randomly through buttons
     row = document.createElement('div');
 
     el.innerHTML = '';
@@ -82,22 +104,10 @@ function MakeRequests(opt) {
     row.appendChild(form);
     el.appendChild(row);
     
-    firebtn.onclick = function () {
-      
-      var dataObj = getDataObj();
-
-      if (dataObj.buttonNum === buttons.length) {
-        for (i = 0; i < dataObj.numClick; i = i + 1) {
-          buttons[Math.floor((Math.random() * 3))].click();
-        }
-      } else {
-        for (i = 0; i < dataObj.numClick; i = i + 1) {
-          buttons[dataObj.buttonNum].click();
-        }
-      }
-      
-    };
+    //As DEFAULT (no distribution selected) the Fire button fires all requests together
+    firebtn.onclick = defaultFireFunction;
     
+    //HTML distributions buttons
     rowDistributions = document.createElement('div');
     rowDistributions.className = 'row';
     el.appendChild(rowDistributions);
@@ -106,20 +116,21 @@ function MakeRequests(opt) {
     
   };
   
+  
   this.distributionButtonsHTML = function () {
     
     var builtHTML = '',
       init = "<button type='button' class='btn btn-primary ml-2 mb-2 distr-button ",
       end = "</button>";
     
-    if (normal) { builtHTML += init + "normal-btn' onClick='makeRequests.showNormal()'>Normal" + end; }
-    if (beta) { builtHTML += init + "beta-btn' onClick='makeRequests.showBeta()'>Beta" + end; }
-    if (chisquare) { builtHTML += init + "chisquare-btn' onClick='makeRequests.showChiSquare()'>Chi Square" + end; }
-    if (exponential) { builtHTML += init + "exp-btn' onClick='makeRequests.showExp()'>Exponential" + end; }
-    if (uniform) { builtHTML += init + "uni-btn' onClick='makeRequests.showUni()'>Uniform" + end; }
-    if (studentt) { builtHTML += init + "studentt-btn' onClick='makeRequests.showStudentT()'>T-Student" + end; }
-    if (linear) { builtHTML += init + "linear-btn' onClick='makeRequests.showLinear()'>Linear" + end; }
-    if (stepFunction) { builtHTML += init + "step-btn' onClick='makeRequests.showStep()'>Step function" + end; }
+    if (normal) { builtHTML += init + "normal-btn' onclick='" + varName + ".showNormal()'>Normal" + end; }
+    if (beta) { builtHTML += init + "beta-btn' onclick='makeRequests.showBeta()'>Beta" + end; }
+    if (chisquare) { builtHTML += init + "chisquare-btn' onclick='" + varName + ".showChiSquare()'>Chi Square" + end; }
+    if (exponential) { builtHTML += init + "exp-btn' onclick='" + varName + ".showExp()'>Exponential" + end; }
+    if (uniform) { builtHTML += init + "uni-btn' onclick='" + varName + ".showUni()'>Uniform" + end; }
+    if (studentt) { builtHTML += init + "studentt-btn' onclick='" + varName + ".showStudentT()'>T-Student" + end; }
+    if (linear) { builtHTML += init + "linear-btn' onclick='" + varName + ".showLinear()'>Linear" + end; }
+    if (stepFunction) { builtHTML += init + "step-btn' onclick='" + varName + ".showStep()'>Step function" + end; }
     
     rowDistributions.innerHTML = builtHTML;
     
@@ -131,7 +142,7 @@ function MakeRequests(opt) {
     
     rowDistributions.innerHTML = form;
     
-    firebtn.onclick = fireFunction('normal', buttonName);
+    firebtn.onclick = function() {fireFunction('normal', buttons)};
     
     this.showChoose();
     
@@ -159,7 +170,7 @@ function MakeRequests(opt) {
     this.showChoose(); };
   
   this.showChoose = function () { 
-    rowDistributions.innerHTML += "<button type='button' class='btn btn-secondary choose-btn ml-2 mb-2' onClick='makeRequests.distributionButtonsHTML()'>Back</button>";
+    rowDistributions.innerHTML += "<button type='button' class='btn btn-secondary choose-btn ml-2 mb-2' onClick='" + varName + ".distributionButtonsHTML()'>Back</button>";
   };
   
   var generateSamples = function (distribution, dataObj) {
@@ -208,10 +219,28 @@ function MakeRequests(opt) {
     
   };
   
-  var fireFunction = function (distribution, buttonName) {
+  var defaultFireFunction = function () {
+      
+      console.log("Fire");
+      var dataObj = getDataObj(),
+          i = 0;
+      
+      console.log(dataObj);
+      if (dataObj.buttonNum == buttons.length) {
+        for (i = 0; i < dataObj.numClick; i = i + 1) {
+          buttons[Math.floor((Math.random() * 3))].click();
+        }
+      } else {
+        for (i = 0; i < dataObj.numClick; i = i + 1) {
+          buttons[dataObj.buttonNum].click();
+        }
+      }
+      
+  };
+  
+  var fireFunction = function (distribution, buttons) {
         
-    var buttons = document.getElementsByClassName(buttonName),
-        dataObj = getDataObj(),
+    var dataObj = getDataObj(),
         samples = generateSamples(distribution, dataObj),
         init = 0,
         i = 0;
@@ -240,14 +269,5 @@ function MakeRequests(opt) {
     }
     
   };
-      
-  this.setCSS = function () {
-    
-    var node = document.createElement('style');
-    node.innerHTML = ".putMeHere {background:#ffcccc} .distr-button { background:#ff8080; border-color:#ff6666; } .distr-button:focus, .distr-button:hover { background:#ff6666; border-color:#ff6666; outline: none !important; box-shadow: none;} .fire-btn{background:#cc0000; border-color:#b30000;} .fire-btn:focus, .fire-btn:hover {background:#b30000; border-color:#b30000; outline: none !important; box-shadow: none;} .no-bottom-margin {margin-bottom: 0px;}}";
-    document.body.appendChild(node);
-    
-  };
-  
    
 }
