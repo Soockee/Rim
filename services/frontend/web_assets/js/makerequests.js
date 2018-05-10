@@ -116,6 +116,47 @@ function MakeRequests(opt) {
       }
     
     },
+      
+    distributionButtonsHTML = function () {
+    
+      var btn;
+      rowDistributions.innerHTML = '';
+
+      if (normal) { 
+        btn = buildDistrButton('Normal');
+        btn.onclick = function() { showNormal(); };
+        rowDistributions.appendChild(btn) };
+      if (beta) { 
+        btn = buildDistrButton('Beta');
+        btn.onclick = function() { showBeta(); };
+        rowDistributions.appendChild(btn) };
+      if (chisquare) { 
+        btn = buildDistrButton('Chi Square');
+        btn.onclick = function() { showChiSquare(); };
+        rowDistributions.appendChild(btn) };
+      if (exponential) { 
+        btn = buildDistrButton('Exponential');
+        btn.onclick = function() { showExp(); };
+        rowDistributions.appendChild(btn) };
+      if (uniform) { 
+        btn = buildDistrButton('Uniform');
+        btn.onclick = function() { showUni(); };
+        rowDistributions.appendChild(btn) };
+      if (studentt) { 
+        btn = buildDistrButton('T-Student');
+        btn.onclick = function() { showStudentT(); };
+        rowDistributions.appendChild(btn) };
+      if (linear) { 
+        btn = buildDistrButton('Linear');
+        btn.onclick = function() { showLinear(); };
+        rowDistributions.appendChild(btn) };
+      if (stepFunction) { 
+        btn = buildDistrButton('Step Function');
+        btn.onclick = function() { showStep(); };
+        rowDistributions.appendChild(btn) };
+
+    },
+   
     
     defaultFireFunction = function () {
       
@@ -175,40 +216,83 @@ function MakeRequests(opt) {
 
       firebtn.onclick = function () { fireFunction('normal'); };
 
-      this.showChoose();
-    
+      showChoose();
     },
       
     showBeta = function () {
-    rowDistributions.innerHTML = '';
-    this.showChoose(); },
+    
+      var form = "<form class='form-inline col-md-12 col-sm-6 mt-2'><h5 class='col-md-3 col-sm-6 no-bottom-margin'>Beta distribution</h5><div class='form-group'><label for='alphaText'>Parameter alpha:&nbsp</label><input type='text' class='form-control mr-sm-2' id='alphaText' name='alpha'/></div><div class='form-group'><label for='betaText'>Parameter beta:&nbsp</label><input type='text' class='form-control mr-sm-2' id='betaText' name='beta'/></div></form>";
+
+      rowDistributions.innerHTML = form;
+
+      firebtn.onclick = function () { fireFunction('beta'); };
+
+      showChoose();
+    },
       
-    showChiSquare = function () { 
-    rowDistributions.innerHTML = '';
-    this.showChoose(); },
+    showChiSquare = function () {
+    
+      var form = "<form class='form-inline col-md-12 col-sm-6 mt-2'><h5 class='col-md-3 col-sm-6 no-bottom-margin'>Chi Square distribution</h5><div class='form-group'><label for='dofText'>Degrees of Freedom:&nbsp</label><input type='text' class='form-control mr-sm-2' id='dofText' name='dof'/></div></form>";
+
+      rowDistributions.innerHTML = form;
+
+      firebtn.onclick = function () { fireFunction('chisquare'); };
+
+      showChoose();
+    },
       
-    showExp = function () { 
-    rowDistributions.innerHTML = '';
-    this.showChoose(); },
+    showExp = function () {
+    
+      var form = "<form class='form-inline col-md-12 col-sm-6 mt-2'><h5 class='col-md-3 col-sm-6 no-bottom-margin'>Exponential distribution</h5><div class='form-group'><label for='rateText'>Rate:&nbsp</label><input type='text' class='form-control mr-sm-2' id='rateText' name='rate'/></div></form>";
+
+      rowDistributions.innerHTML = form;
+
+      firebtn.onclick = function () { fireFunction('exp'); };
+
+      showChoose();
+    },
       
-    showUni = function () { 
-    rowDistributions.innerHTML = '';
-    this.showChoose(); },
+    showUni = function () {
+    
+      var form = "<form class='form-inline col-md-12 col-sm-6 mt-2'><h5 class='col-md-3 col-sm-6 no-bottom-margin'>Uniform distribution</h5><div class='form-group'><label for='aText'>Parameter a:&nbsp</label><input type='text' class='form-control mr-sm-2' id='aText' name='a'/></div><div class='form-group'><label for='bText'>Parameter b:&nbsp</label><input type='text' class='form-control mr-sm-2' id='bText' name='b'/></div></form>";
+
+      rowDistributions.innerHTML = form;
+
+      firebtn.onclick = function () { fireFunction('uni'); };
+
+      showChoose();
+    },
       
-    showStudentT = function () { 
-    rowDistributions.innerHTML = '';
-    this.showChoose(); },
+    showStudentT = function () {
+    
+      var form = "<form class='form-inline col-md-12 col-sm-6 mt-2'><h5 class='col-md-3 col-sm-6 no-bottom-margin'>T-Student distribution</h5><div class='form-group'><label for='dofText'>Degrees of Freedom:&nbsp</label><input type='text' class='form-control mr-sm-2' id='dofText' name='dof'/></div></form>";
+
+      rowDistributions.innerHTML = form;
+
+      firebtn.onclick = function () { fireFunction('studentT'); };
+
+      showChoose();
+    },
       
     showLinear = function () { 
     rowDistributions.innerHTML = '';
-    this.showChoose(); },
+    showChoose(); },
       
     showStep = function () { 
     rowDistributions.innerHTML = '';
-    this.showChoose(); },
+    showChoose(); },
   
     showChoose = function () { 
-    rowDistributions.innerHTML += "<button type='button' class='btn btn-secondary choose-btn ml-2 mb-2' onClick='" + varName + ".distributionButtonsHTML()'>Back</button>";
+      
+      var btn;
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-secondary choose-btn ml-2';
+      btn.textContent = 'Back';
+      btn.onclick = function () { distributionButtonsHTML(); };
+      
+      rowDistributions.firstChild.appendChild(btn);
+      
     };
   
   //INITIALIZATION function
@@ -263,48 +347,8 @@ function MakeRequests(opt) {
     rowDistributions.className = 'row';
     el.appendChild(rowDistributions);
     
-    this.distributionButtonsHTML();
+    distributionButtonsHTML();
     
   };
   
-  
-  this.distributionButtonsHTML = function () {
-    
-    var btn;
-    
-    if (normal) { 
-      btn = buildDistrButton('Normal');
-      btn.onclick = function() { showNormal(); };
-      rowDistributions.appendChild(btn) };
-    if (beta) { 
-      btn = buildDistrButton('Beta');
-      btn.onclick = function() { showBeta(); };
-      rowDistributions.appendChild(btn) };
-    if (chisquare) { 
-      btn = buildDistrButton('Chi Square');
-      btn.onclick = function() { showChiSquare(); };
-      rowDistributions.appendChild(btn) };
-    if (exponential) { 
-      btn = buildDistrButton('Exponential');
-      btn.onclick = function() { showExp(); };
-      rowDistributions.appendChild(btn) };
-    if (uniform) { 
-      btn = buildDistrButton('Uniform');
-      btn.onclick = function() { showUni(); };
-      rowDistributions.appendChild(btn) };
-    if (studentt) { 
-      btn = buildDistrButton('T-Student');
-      btn.onclick = function() { showStudentT(); };
-      rowDistributions.appendChild(btn) };
-    if (linear) { 
-      btn = buildDistrButton('Linear');
-      btn.onclick = function() { showLinear(); };
-      rowDistributions.appendChild(btn) };
-    if (stepFunction) { 
-      btn = buildDistrButton('Step Function');
-      btn.onclick = function() { showStep(); };
-      rowDistributions.appendChild(btn) };
-    
-  };
-   
 }
