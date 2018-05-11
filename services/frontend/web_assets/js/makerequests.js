@@ -101,7 +101,7 @@ function MakeRequests(opt) {
   setCSS = function () {
 
     var node = document.createElement('style');
-    node.innerHTML = ".putMeHere {background:#ffcccc} .distr-button { background:#ff8080; border-color:#ff6666; } .distr-button:focus, .distr-button:hover { background:#ff6666; border-color:#ff6666; outline: none !important; box-shadow: none;} .fire-btn{background:#cc0000; border-color:#b30000;} .fire-btn:focus, .fire-btn:hover {background:#b30000; border-color:#b30000; outline: none !important; box-shadow: none;} .align-left {text-align: left;} .info-distr{ color:red; margin-left: 15px; margin-right: 15px;} .choose-btn{ margin-left: 15px !important}";
+    node.innerHTML = ".putMeHere {background:#ffe6b3} .distr-button { background:#ffcc66; border-color:#ffaa00; } .distr-button:focus, .distr-button:hover { background:#ffc34d; border-color:#ffaa00; outline: none !important; box-shadow: none;} .fire-btn{background:#ffaa00; border-color:#e69900;} .fire-btn:focus, .fire-btn:hover {background:#e69900; border-color:#e69900; outline: none !important; box-shadow: none;} .align-left {text-align: left;} .info-distr{ color:red; margin-left: 15px; margin-right: 15px;} .choose-btn{ margin-left: 15px !important}";
     document.body.appendChild(node);
 
   };
@@ -353,7 +353,7 @@ function MakeRequests(opt) {
 
   showUni = function () {
 
-    var form = "<h5 class='col-md-3 col-sm-6 align-left'>Uniform distribution</h5><form class='form-inline col-md-12 col-sm-6 mt-2'><div class='form-group'><label for='aText'>Parameter a:&nbsp</label><input type='number' class='form-control mr-sm-2' id='aText' name='a'/></div><div class='form-group'><label for='bText'>Parameter b:&nbsp</label><input type='number' class='form-control mr-sm-2' id='bText' name='b'/></div>" + timeInputHTML + "</form><p class='info-distr'>Parameters 'a' and 'b' are the initial and final point of the uniform sampling interval</p>";
+    var form = "<h5 class='col-md-3 col-sm-6 align-left'>Uniform distribution</h5><p class='info-distr'>Parameters 'a' and 'b' are the initial and final point of the uniform sampling interval</p><form class='form-inline col-md-12 col-sm-6 mt-2'><div class='form-group'><label for='aText'>Parameter a:&nbsp</label><input type='number' class='form-control mr-sm-2' id='aText' name='a'/></div><div class='form-group'><label for='bText'>Parameter b:&nbsp</label><input type='number' class='form-control mr-sm-2' id='bText' name='b'/></div>" + timeInputHTML + "</form>";
 
     rowDistributions.innerHTML = form;
 
@@ -481,16 +481,16 @@ function MakeRequests(opt) {
     form.innerHTML = formHTML + "</select></div></div>";
     
     firebtn = document.createElement('button');
-    firebtn.className = 'btn btn-info fire-btn';
+    firebtn.className = 'btn btn-info fire-btn ml-2';
     firebtn.type = 'button';
     firebtn.textContent = "Fire!";
+    
+    //As DEFAULT (no distribution selected) the Fire button fires all requests together
+    firebtn.onclick = defaultFireFunction;
     
     form.appendChild(firebtn);
     row.appendChild(form);
     el.appendChild(row);
-    
-    //As DEFAULT (no distribution selected) the Fire button fires all requests together
-    firebtn.onclick = defaultFireFunction;
     
     //HTML distributions buttons
     rowDistributions = document.createElement('div');
