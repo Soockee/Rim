@@ -216,32 +216,81 @@ function MakeRequests(opt) {
   };
 
   //Scattered plot of samples
-  plotSamples = function (samples) {
+  plotSamples = function (samples, distribution) {
 
     var counts = {},
       x = [],
+      sorted = [],
       y = [],
       k,
+      i,
       trace,
+      trace2,
       data,
       layout;
 
     samples.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-
+    
     for (k in counts) {
       if (counts.hasOwnProperty(k)) {
-        x.push(k / 1000);
-        y.push(counts[k]);
+        sorted.push(k);
       }
+    }
+    sorted.sort(function (a, b) { return (a - b); });
+    
+    for (i = 0; i < sorted.length; i += 1) {
+      x.push(sorted[i] / 1000);
+      y.push(counts[sorted[i]]);
     }
 
     trace = {
       x: x,
       y: y,
+      marker: {
+        color: "rgba(255, 170, 0, 1)"
+      },
+      name: 'Continue time',
       mode: 'markers'
     };
-    data = [trace];
-    layout = {};
+    
+    if (distribution === 'linear' || distribution === 'step') {
+      
+      trace2 = {
+        x: x,
+        y: y,
+        mode: 'lines',
+        marker: {
+          color: "rgba(255, 195, 77, 1)"
+        },
+        name: 'Scatter',
+        type: 'scatter'
+      };
+    } else {
+      
+      trace2 = {
+        x: x,
+        opacity: 0.75,
+        marker: {
+          color: "rgba(255, 195, 77, 0.7)",
+          line: {
+            color:  "rgba(255, 195, 77, 1)",
+            width: 1
+          }
+        },
+        name: 'Discrete time',
+        type: 'histogram'
+      };
+    }
+    
+    data = [trace, trace2];
+    layout = {
+      bargap: 0.05,
+      bargroupgap: 0.05,
+      barmode: "overlay",
+      title: "Requests over Time",
+      xaxis: {title: "Time"},
+      yaxis: {title: "Count"}
+    };
 
     Plotly.newPlot('graph', data, layout);
 
@@ -271,7 +320,7 @@ function MakeRequests(opt) {
     }
 
     //PLOT samples
-    plotSamples(samples);
+    plotSamples(samples, distribution);
 
     if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
       for (i = 0; i < samples.length; i += 1) {
