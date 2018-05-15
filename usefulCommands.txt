@@ -30,6 +30,7 @@ go run ./main.go all
 
 GO
 cd /Users/Mario/go/src/github.com/jaegertracing/jaeger/examples/hotrod/services/frontend/
+cd /Users/Mario/go/src/github.com/MakeRequests/services/frontend
 go-bindata-assetfs -ignore web_assets/.DS_Store -pkg frontend -o bindata_assetfs.go web_assets/...
 
 ALL IN

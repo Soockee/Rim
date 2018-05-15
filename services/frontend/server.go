@@ -22,9 +22,9 @@ import (
 	"go.uber.org/zap"
 	"github.com/elazarl/go-bindata-assetfs"
 
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/httperr"
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/log"
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/tracing"
+	"github.com/MakeRequests/pkg/httperr"
+	"github.com/MakeRequests/pkg/log"
+	"github.com/MakeRequests/pkg/tracing"
 )
 
 // Server implements jaeger-demo-frontend service

@@ -27,11 +27,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.uber.org/zap"
 
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/delay"
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/httperr"
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/log"
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/tracing"
-	"github.com/jaegertracing/jaeger/examples/hotrod/services/config"
+	"github.com/MakeRequests/pkg/delay"
+	"github.com/MakeRequests/pkg/httperr"
+	"github.com/MakeRequests/pkg/log"
+	"github.com/MakeRequests/pkg/tracing"
+	"github.com/MakeRequests/services/config"
 )
 
 // Server implements Route service

@@ -23,8 +23,8 @@ import (
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
 
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/log"
-	"github.com/jaegertracing/jaeger/examples/hotrod/pkg/tracing"
+	"github.com/MakeRequests/pkg/log"
+	"github.com/MakeRequests/pkg/tracing"
 )
 
 // Client is a remote client that implements customer.Interface
