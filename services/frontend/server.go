@@ -57,27 +57,28 @@ func (s *Server) Run() error {
 func (s *Server) createServeMux() http.Handler {
 	mux := tracing.NewServeMux(s.tracer)
 	mux.Handle("/", http.HandlerFunc(s.home))
+	mux.Handle("/js/", http.HandlerFunc(s.resource))
 	mux.Handle("/dispatch", http.HandlerFunc(s.dispatch))
 	return mux
 }
 
 func (s *Server) home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.String() == "/" {
-		s.logger.For(r.Context()).Info("HTTP", zap.String("method", r.Method), zap.Stringer("url", r.URL))
-		b, err := s.assetFs.Asset("web_assets/index.html")
-		if err != nil {
-			http.Error(w, "Could not load index page", http.StatusInternalServerError)
-			s.logger.Bg().Error("Could lot load static assets", zap.Error(err))
-		}
-		w.Write(b)
-	} else {
+	s.logger.For(r.Context()).Info("HTTP", zap.String("method", r.Method), zap.Stringer("url", r.URL))
+	b, err := s.assetFs.Asset("web_assets/index.html")
+	if err != nil {
+		http.Error(w, "Could not load index page", http.StatusInternalServerError)
+		s.logger.Bg().Error("Could lot load static assets", zap.Error(err))
+	}
+	w.Write(b)
+}
+
+func (s *Server) resource(w http.ResponseWriter, r *http.Request) {
 		b, err := s.assetFs.Asset("web_assets" + r.URL.String())
 		if err != nil {
 			http.Error(w, "Could not load resource", http.StatusInternalServerError)
 			s.logger.Bg().Error("Could lot load static assets resource", zap.Error(err))
 		}
 		w.Write(b)
-	}
 }
 
 func (s *Server) dispatch(w http.ResponseWriter, r *http.Request) {
