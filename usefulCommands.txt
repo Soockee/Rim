@@ -16,6 +16,9 @@ docker stack deploy -c jaeger-docker-compose.yml <service-name>
 docker stack rm <service-name>
 docker swarm leave --force
 
+REFER to HOST IP ADDRESS (Not working on if Linux host)
+host.docker.internal
+
 cd /Users/Mario/eclipse-workspace/jaeger-java-collector/jaeger 
 docker-compose -f jaeger-docker-compose.yml up
 
@@ -51,6 +54,12 @@ docker run -d -p6831:6831/udp -p16686:16686 jaegertracing/all-in-one:latest
 JAEGER
 Can ask more than 1500 traces simply changing directly limit in the URL, check only in UI
 
+INFLUX
+docker exec -it tik_influxdb_1 influx --precision rfc3339
+show databases
+use telegraf
+show measurements
+docker-compose down --volumes
 
 PREVIOUS DOCKER FILE - FOR JAEGER AGENT - VERSION
 
