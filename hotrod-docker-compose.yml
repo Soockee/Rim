@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+    hotrod-frontend:
+      image: marioscrock/hotrod
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "frontend"]
+      ports:
+        - "8080:8080"
+      networks:
+        - jaeger_jaeger-net
+      restart: on-failure
+
+    hotrod-route:
+      image: marioscrock/hotrod
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "route"]
+      ports:
+        - "8083:8083"
+      restart: on-failure
+      networks:
+        - jaeger_jaeger-net
+      depends_on:
+        - hotrod-frontend
+
+    hotrod-customer:
+      image: marioscrock/hotrod
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "customer"]
+      ports:
+        - "8081:8081"
+      restart: on-failure
+      networks:
+        - jaeger_jaeger-net
+      depends_on:
+        - hotrod-frontend
+
+    hotrod-driver:
+      image: marioscrock/hotrod
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "driver"]
+      ports:
+        - "8082:8082"
+      restart: on-failure
+      networks:
+        - jaeger_jaeger-net
+      depends_on:
+        - hotrod-frontend
+
+networks:
+  jaeger_jaeger-net:
+    external: true

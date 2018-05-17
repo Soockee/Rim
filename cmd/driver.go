@@ -55,6 +55,6 @@ var (
 func init() {
 	RootCmd.AddCommand(driverCmd)
 
-	driverCmd.Flags().StringVarP(&driverOptions.serverInterface, "bind", "", "0.0.0.0", "interface to which the driver server will bind")
+	driverCmd.Flags().StringVarP(&driverOptions.serverInterface, "bind", "", "hotrod-driver", "interface to which the driver server will bind")
 	driverCmd.Flags().IntVarP(&driverOptions.serverPort, "port", "p", 8082, "port on which the driver server will listen")
 }

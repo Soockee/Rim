@@ -7,17 +7,29 @@ docker build -t marioscrock/jaeger-agent .
 cd /Users/Mario/eclipse-workspace/jaeger-java-collector
 docker build -t marioscrock/jaeger-java-collector .
 
+cd $GOPATH/src
+docker build --file github.com/MakeRequests/Dockerfile -t marioscrock/hotrod .
+
 docker swarm init
 docker stack deploy -c jaeger-docker-compose.yml <service-name>
 
 docker stack rm <service-name>
 docker swarm leave --force
 
-cd /Users/Mario/go/src/github.com/jaegertracing 
+cd /Users/Mario/eclipse-workspace/jaeger-java-collector/jaeger 
 docker-compose -f jaeger-docker-compose.yml up
+
+cd $GOPATH/src/github.com/MakeRequests
+docker-compose -f hotrod-docker-compose.yml up
 
 REMOVE intermediate images for multi-stage builds
 docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+
+REMOVE all CONTAINERS
+docker rm `docker ps --no-trunc -aq`
+
+BASH
+docker exec -it <containerIdOrName> bash
 
 HOTROD
 mkdir -p $GOPATH/src/github.com/jaegertracing

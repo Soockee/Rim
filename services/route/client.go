@@ -53,7 +53,7 @@ func (c *Client) FindRoute(ctx context.Context, pickup, dropoff string) (*Route,
 	v := url.Values{}
 	v.Set("pickup", pickup)
 	v.Set("dropoff", dropoff)
-	url := "http://127.0.0.1:8083/route?" + v.Encode()
+	url := "http://hotrod-route:8083/route?" + v.Encode()
 
 	var route Route
 	if err := c.client.GetJSON(ctx, "/route", url, &route); err != nil {
