@@ -21,14 +21,14 @@ function MakeRequests(opt) {
   var buttonName = opt.buttonClassName,
     putMeHere = opt.putMeHereClassName,
     //Functions config
-    beta = true,
-    chisquare = true,
-    exponential = true,
-    normal = true,
-    studentt = true,
-    uniform = true,
-    linear = true,
-    stepFunction = true,
+    beta = opt.beta || opt.all,
+    chisquare = opt.chisquare || opt.all,
+    exp = opt.exp || opt.all,
+    normal = opt.normal || opt.all,
+    studentT = opt.studentT || opt.all,
+    uni = opt.uni || opt.all,
+    linear = opt.linear || opt.all,
+    step = opt.step || opt.all,
       
     //VARIABLES
     //Buttons to click
@@ -466,17 +466,17 @@ function MakeRequests(opt) {
       btn.onclick = function () { showChiSquare(); };
       rowDistributions.appendChild(btn);
     }
-    if (exponential) {
+    if (exp) {
       btn = buildDistrButton('Exponential');
       btn.onclick = function () { showExp(); };
       rowDistributions.appendChild(btn);
     }
-    if (uniform) {
+    if (uni) {
       btn = buildDistrButton('Uniform');
       btn.onclick = function () { showUni(); };
       rowDistributions.appendChild(btn);
     }
-    if (studentt) {
+    if (studentT) {
       btn = buildDistrButton('T-Student');
       btn.onclick = function () { showStudentT(); };
       rowDistributions.appendChild(btn);
@@ -486,7 +486,7 @@ function MakeRequests(opt) {
       btn.onclick = function () { showLinear(); };
       rowDistributions.appendChild(btn);
     }
-    if (stepFunction) {
+    if (step) {
       btn = buildDistrButton('Step Function');
       btn.onclick = function () { showStep(); };
       rowDistributions.appendChild(btn);
