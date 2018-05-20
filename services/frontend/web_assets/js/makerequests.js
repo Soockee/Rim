@@ -324,6 +324,8 @@ function MakeRequests(opt) {
     if (graph) {
       plotSamples(samples, distribution);
     }
+    
+    console.log(samples);
 
     if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
       for (i = 0; i < samples.length; i += 1) {
@@ -347,7 +349,10 @@ function MakeRequests(opt) {
     btn.type = 'button';
     btn.className = 'btn btn-secondary choose-btn ml-2 mb-2';
     btn.textContent = 'Back';
-    btn.onclick = function () { distributionButtonsHTML(); };
+    btn.onclick = function () { 
+      distributionButtonsHTML();
+      document.getElementsByClassName("numClick")[0].removeAttribute("disabled");
+    };
 
     rowDistributions.appendChild(btn);
 
@@ -430,6 +435,8 @@ function MakeRequests(opt) {
     var form = "<h5 class='col-md-3 col-sm-6 align-left'>Linear growth</h5><p class='info-distr'>'Number of requests' parameter determined automatically for 'Linear growth'</p><form class='form-inline col-md-12 col-sm-6 mt-2'><div class='form-group'><label for='slopeText'>Slope:&nbsp</label><input type='number' class='form-control mr-sm-2' id='slopeText' name='slope'/></div><div class='form-group'><label for='stepText'>Number of steps:&nbsp</label><input type='number' class='form-control mr-sm-2' id='stepText' name='step'/></div>" + timeInputHTML + "</form>";
 
     rowDistributions.innerHTML = form;
+    
+    document.getElementsByClassName("numClick")[0].setAttribute("disabled", "");
 
     firebtn.onclick = function () { fireFunction('linear'); };
 
@@ -441,6 +448,8 @@ function MakeRequests(opt) {
     var form = "<h5 class='col-md-3 col-sm-6 align-left'>Step function</h5><p class='info-distr'>'Number of requests' parameter determined automatically. 'Time interval' defines the entire duration. 'Number of steps' refers to a single repetition and it is rounded w.r.t the inserted 'Ratio'. </p><form class='form-inline col-md-12 col-sm-6 mt-2'><div class='form-group'><label for='lowText'>Low value:&nbsp</label><input type='number' class='form-control mr-sm-2' placeholder='0' id='lowText' name='lowValue'/></div><div class='form-group'><label for='highText'>High value:&nbsp</label><input type='number' class='form-control mr-sm-2' id='highText' name='highValue'/></div>" + timeInputHTML + "<div class='form-group mt-2'><label for='ratioText'>Ratio:&nbsp</label><input type='number' class='form-control mr-sm-2' placeholder='0 to 1 value' id='ratioText' placeholder='timeHigh/timeLow' name='ratio'/></div><div class='form-group mt-2'><label for='stepText'>Number of steps:&nbsp</label><input type='number' class='form-control mr-sm-2' id='stepText' name='step'/></div><div class='form-group mt-2'><label for='repetitionsText'>Repetitions:&nbsp</label><input type='number' class='form-control mr-sm-2' id='repetitionsText' name='rep'/></div></form>";
 
     rowDistributions.innerHTML = form;
+    
+    document.getElementsByClassName("numClick")[0].setAttribute("disabled", "");
 
     firebtn.onclick = function () { fireFunction('step'); };
 
@@ -503,6 +512,9 @@ function MakeRequests(opt) {
     //Add CSS style
     setCSS();
     
+    //Random seed
+    Math.seedrandom('hello.');
+    
     //Retrieve array of elements to be clicked
     buttons = document.getElementsByClassName(buttonName);
     //Retrieve container where to append library-generated HTML
@@ -523,7 +535,7 @@ function MakeRequests(opt) {
     
     form.className = 'form-inline col-md-12 col-sm-6 mt-2';
     
-    formHTML = "<div class='form-group'><label for='numClickText'>Number of requests:&nbsp</label><input type='number' class='form-control mr-sm-2' id='numClickText' name='numClick'/></div><div class='form-group'><label for='buttonsSelect'>Button(s):&nbsp</label><div class='input-group mr-sm-2'><select class='custom-select mr-sm-2' id='buttonsSelect' name='buttonNum'>";
+    formHTML = "<div class='form-group'><label for='numClickText'>Number of requests:&nbsp</label><input type='number' class='form-control numClick mr-sm-2' id='numClickText' name='numClick'/></div><div class='form-group'><label for='buttonsSelect'>Button(s):&nbsp</label><div class='input-group mr-sm-2'><select class='custom-select mr-sm-2' id='buttonsSelect' name='buttonNum'>";
     
     for (i = 0; i < buttons.length; i = i + 1) {
       formHTML += "<option value='" + i + "'>" + buttons[i].firstChild.nodeValue + "</option>";
