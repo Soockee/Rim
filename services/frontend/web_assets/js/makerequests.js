@@ -40,6 +40,8 @@ function MakeRequests(opt) {
     row,
     //Row containing distribution buttons or form for selected distribution
     rowDistributions,
+    //Row containing seed form
+    rowSeed,
     //Button to fire requests
     firebtn,
     //Time Interval form-group HTML
@@ -67,6 +69,8 @@ function MakeRequests(opt) {
     fireFunction,
     //Return HTML for buttons related to distributions
     distributionButtonsHTML,
+    //Add main form HTML
+    buildMainForm,
       
     //Return HTML for form needed for the distribution specified
     showChoose,
@@ -324,8 +328,6 @@ function MakeRequests(opt) {
     if (graph) {
       plotSamples(samples, distribution);
     }
-    
-    console.log(samples);
 
     if (parseInt(dataObj.buttonNum, 10) === buttons.length) {
       for (i = 0; i < samples.length; i += 1) {
@@ -349,9 +351,9 @@ function MakeRequests(opt) {
     btn.type = 'button';
     btn.className = 'btn btn-secondary choose-btn ml-2 mb-2';
     btn.textContent = 'Back';
-    btn.onclick = function () { 
+    btn.onclick = function () {
       distributionButtonsHTML();
-      document.getElementsByClassName("numClick")[0].removeAttribute("disabled");
+      document.getElementById("numClickText").removeAttribute("disabled");
     };
 
     rowDistributions.appendChild(btn);
@@ -436,7 +438,7 @@ function MakeRequests(opt) {
 
     rowDistributions.innerHTML = form;
     
-    document.getElementsByClassName("numClick")[0].setAttribute("disabled", "");
+    document.getElementById("numClickText").setAttribute("disabled", "");
 
     firebtn.onclick = function () { fireFunction('linear'); };
 
@@ -449,7 +451,7 @@ function MakeRequests(opt) {
 
     rowDistributions.innerHTML = form;
     
-    document.getElementsByClassName("numClick")[0].setAttribute("disabled", "");
+    document.getElementById("numClickText").setAttribute("disabled", "");
 
     firebtn.onclick = function () { fireFunction('step'); };
 
@@ -505,37 +507,25 @@ function MakeRequests(opt) {
     }
 
   };
-   
-  //INITIALIZATION function
-  this.build = function () {
     
-    //Add CSS style
-    setCSS();
-    
-    //Random seed
-    Math.seedrandom('hello.');
-    
-    //Retrieve array of elements to be clicked
-    buttons = document.getElementsByClassName(buttonName);
-    //Retrieve container where to append library-generated HTML
-    el = document.getElementsByClassName(putMeHere)[0];
+  buildMainForm = function () {
     
     //Generate HTML
     //FORM
     //- Number of Requests: number of requests to generate
     //- Selection button: button to click / click randomly through buttons
-    row = document.createElement('div');
-
-    el.innerHTML = '';
-    row.className = 'row';
+    //- Seed selection
     
     var form = document.createElement('form'),
+      formSeed = document.createElement('form'),
       formHTML,
+      formSeedHTML,
+      seedbtn,
       i;
     
     form.className = 'form-inline col-md-12 col-sm-6 mt-2';
     
-    formHTML = "<div class='form-group'><label for='numClickText'>Number of requests:&nbsp</label><input type='number' class='form-control numClick mr-sm-2' id='numClickText' name='numClick'/></div><div class='form-group'><label for='buttonsSelect'>Button(s):&nbsp</label><div class='input-group mr-sm-2'><select class='custom-select mr-sm-2' id='buttonsSelect' name='buttonNum'>";
+    formHTML = "<div class='form-group'><label for='numClickText'>Number of requests:&nbsp</label><input type='number' class='form-control mr-sm-2' id='numClickText' name='numClick'/></div><div class='form-group'><label for='buttonsSelect'>Button(s):&nbsp</label><div class='input-group mr-sm-2'><select class='custom-select mr-sm-2' id='buttonsSelect' name='buttonNum'>";
     
     for (i = 0; i < buttons.length; i = i + 1) {
       formHTML += "<option value='" + i + "'>" + buttons[i].firstChild.nodeValue + "</option>";
@@ -555,6 +545,58 @@ function MakeRequests(opt) {
     form.appendChild(firebtn);
     row.appendChild(form);
     el.appendChild(row);
+    
+    //SEED form
+    
+    formSeed.className = 'form-inline col-md-12 col-sm-6 mt-2';
+    
+    formSeedHTML = "<div class='form-group'><label for='seedText'>Seed:&nbsp</label><input type='text' class='form-control mr-sm-2' id='seedText' name='seed'/></div><label id='currentSeed'><i>No seed currently set</i></label>";
+    
+    formSeed.innerHTML = formSeedHTML;
+    
+    seedbtn = document.createElement('button');
+    seedbtn.className = 'btn btn-info fire-btn ml-4';
+    seedbtn.type = 'button';
+    seedbtn.textContent = "Set seed";
+    
+    seedbtn.onclick = function () {
+      var seed = getDataObj().seed;
+      
+      //Random seed
+      if (seed !== 0) {
+        Math.seedrandom(seed);
+        document.getElementById('currentSeed').textContent = "Seed: " + seed;
+      }
+      
+    };
+    
+    formSeed.appendChild(seedbtn);
+    rowSeed.appendChild(formSeed);
+    
+  };
+   
+  //INITIALIZATION function
+  this.build = function () {
+    
+    //Add CSS style
+    setCSS();
+    
+    //Retrieve array of elements to be clicked
+    buttons = document.getElementsByClassName(buttonName);
+    //Retrieve container where to append library-generated HTML
+    el = document.getElementsByClassName(putMeHere)[0];
+    el.innerHTML = '';
+    
+    row = document.createElement('div');
+    row.className = 'row';
+    
+    rowSeed = document.createElement('div');
+    rowSeed.className = 'row';
+    
+    buildMainForm();
+    
+    el.appendChild(row);
+    el.appendChild(rowSeed);
     
     //HTML distributions buttons
     rowDistributions = document.createElement('div');
