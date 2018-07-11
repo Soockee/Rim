@@ -48,10 +48,10 @@
       <h4><em>Rides On Demand</em></h4>
       <div class="putMeHere container"></div>
       <div class="row">
-        <div class="col-md-3 col-sm-6"> <span class="btn btn-info btn-block hotrod-button" data-customer="123">Rachel's Floral Designs</span> </div>
-        <div class="col-md-3 col-sm-6"> <span class="btn btn-info btn-block hotrod-button" data-customer="392">Trom Chocolatier</span> </div>
-        <div class="col-md-3 col-sm-6"> <span class="btn btn-info btn-block hotrod-button" data-customer="731">Japanese Deserts</span> </div>
-        <div class="col-md-3 col-sm-6"> <span class="btn btn-info btn-block hotrod-button" data-customer="567">Amazing Coffee Roasters</span> </div>
+        <div class="col-md-3 col-sm-6"> <span class="btn btn-info btn-block hotrod-button" data-customer="123" url-key="123">Rachel's Floral Designs</span> </div>
+        <div class="col-md-3 col-sm-6"> <span class="btn btn-info btn-block hotrod-button" data-customer="392" url-key="392">Trom Chocolatier</span> </div>
+        <div class="col-md-3 col-sm-6"> <span class="btn btn-info btn-block hotrod-button" data-customer="731" url-key="731">Japanese Deserts</span> </div>
+        <div class="col-md-3 col-sm-6"> <span class="btn btn-info btn-block hotrod-button" data-customer="567" url-key="567">Amazing Coffee Roasters</span> </div>
       </div>
       <div id="tip">Click on customer name above to order a car.</div>
       <div id="hotrod-log" class="lead"></div>
@@ -88,7 +88,10 @@
       }
     , });
   });
-  var makeRequests = new MakeRequests({buttonClassName: "hotrod-button", putMeHereClassName: "putMeHere", all: true, graph: true});
+  var makeRequests = new MakeRequests({buttonClassName: "hotrod-button", putMeHereClassName: "putMeHere", all: true, graph: true, generateGoFile: true, mapUrl: {"123":"http://127.0.0.1:8080/dispatch?customer=123",
+  "392":"http://127.0.0.1:8080/dispatch?customer=392",
+  "731":"http://127.0.0.1:8080/dispatch?customer=731",
+  "567":"http://127.0.0.1:8080/dispatch?customer=567"}});
   makeRequests.build();
 </script>
 

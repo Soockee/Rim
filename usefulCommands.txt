@@ -7,6 +7,7 @@ docker build -t marioscrock/jaeger-agent .
 cd /Users/Mario/eclipse-workspace/jaeger-java-collector
 docker build -t marioscrock/jaeger-java-collector .
 
+BUILD HOTROD IMAGES
 cd $GOPATH/src
 docker build --file github.com/MakeRequests/Dockerfile -t marioscrock/hotrod .
 
