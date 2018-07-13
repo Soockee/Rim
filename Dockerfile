@@ -13,7 +13,7 @@ ADD /github.com/apache/ /go/src/github.com/apache/
 ADD /github.com/beorn7/ /go/src/github.com/beorn7/
 ADD /github.com/codahale/ /go/src/github.com/codahale/
 ADD /github.com/go-kit/ /go/src/github.com/go-kit/
-ADD /github.com/elazarl/ /go/src/github.com/elazarl/
+ADD /github.com/rakyll/statik/fs /go/src/github.com/rakyll/statik/fs
 ADD /github.com/golang/ /go/src/github.com/golang/
 ADD /github.com/matttproud/ /go/src/github.com/matttproud/
 ADD /github.com/opentracing/ /go/src/github.com/opentracing/
