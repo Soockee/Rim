@@ -36,6 +36,9 @@ var (
 	metricsFactory metrics.Factory
 
 	fixDBConnDelay         time.Duration
+	fixRedisFindDelay      time.Duration
+	fixRedisGetDelay       time.Duration
+	fixRouteCalcDelay       time.Duration
 	fixDBConnDisableMutex  bool
 	fixRouteWorkerPoolSize int
 )
@@ -60,6 +63,9 @@ func init() {
 	RootCmd.PersistentFlags().StringVarP(&metricsBackend, "metrics", "m", "expvar", "Metrics backend (expvar|prometheus)")
 	RootCmd.PersistentFlags().StringVarP(&jAgentHostPort, "jaeger-agent.host-port", "a", "0.0.0.0:6831", "String representing jaeger-agent UDP host:port, or jaeger-collector HTTP endpoint address, e.g. http://localhost:14268/api/traces.")
 	RootCmd.PersistentFlags().DurationVarP(&fixDBConnDelay, "fix-db-query-delay", "D", 300*time.Millisecond, "Average lagency of MySQL DB query")
+	RootCmd.PersistentFlags().DurationVarP(&fixRedisFindDelay, "fix-redis-find-delay", "F", 20*time.Millisecond, "How long finding closest drivers takes")
+	RootCmd.PersistentFlags().DurationVarP(&fixRedisGetDelay, "fix-redis-get-delay", "G", 10*time.Millisecond, "How long retrieving a driver record takes")
+	RootCmd.PersistentFlags().DurationVarP(&fixRouteCalcDelay, "fix-route-calc-delay", "R", 50*time.Millisecond, "How long a route calculation takes")
 	RootCmd.PersistentFlags().BoolVarP(&fixDBConnDisableMutex, "fix-disable-db-conn-mutex", "M", false, "Disables the mutex guarding db connection")
 	RootCmd.PersistentFlags().IntVarP(&fixRouteWorkerPoolSize, "fix-route-worker-pool-size", "W", 3, "Default worker pool size")
 	rand.Seed(int64(time.Now().Nanosecond()))
@@ -81,6 +87,18 @@ func onInitialize() {
 	if config.MySQLGetDelay != fixDBConnDelay {
 		logger.Info("fix: overriding MySQL query delay", zap.Duration("old", config.MySQLGetDelay), zap.Duration("new", fixDBConnDelay))
 		config.MySQLGetDelay = fixDBConnDelay
+	}
+	if config.RedisFindDelay != fixRedisFindDelay {
+		logger.Info("fix: overriding Redis find delay", zap.Duration("old", config.RedisFindDelay), zap.Duration("new", fixRedisFindDelay))
+		config.RedisFindDelay = fixRedisFindDelay
+	}
+	if config.RedisGetDelay != fixRedisGetDelay {
+		logger.Info("fix: overriding Redis get delay", zap.Duration("old", config.RedisGetDelay), zap.Duration("new", fixRedisGetDelay))
+		config.RedisGetDelay = fixRedisGetDelay
+	}
+	if config.RouteCalcDelay != fixRouteCalcDelay {
+		logger.Info("fix: overriding route calc delay", zap.Duration("old", config.RouteCalcDelay), zap.Duration("new", fixRouteCalcDelay))
+		config.RouteCalcDelay = fixRouteCalcDelay
 	}
 	if fixDBConnDisableMutex {
 		logger.Info("fix: disabling db connection mutex")

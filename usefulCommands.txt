@@ -9,7 +9,7 @@ docker build -t marioscrock/jaeger-java-collector .
 
 BUILD HOTROD IMAGES
 cd $GOPATH/src
-docker build --file github.com/MakeRequests/Dockerfile -t marioscrock/hotrod .
+docker build --file github.com/MakeRequests/Dockerfile --no-cache -t marioscrock/hotrod .
 
 docker swarm init
 docker stack deploy -c jaeger-docker-compose.yml <service-name>
@@ -27,7 +27,7 @@ cd $GOPATH/src/github.com/MakeRequests
 docker-compose -f hotrod-docker-compose.yml up
 
 REMOVE intermediate images for multi-stage builds
-docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+docker rmi $(docker images | grep "^<none>" | awk "{print $3}") [--force]
 
 REMOVE all CONTAINERS
 docker rm `docker ps --no-trunc -aq`

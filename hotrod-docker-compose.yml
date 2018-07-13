@@ -2,8 +2,8 @@ version: '3'
 
 services:
     hotrod-frontend:
-      image: marioscrock/hotrod
-      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "frontend"]
+      image: marioscrock/hotrod:latest
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "--fix-route-worker-pool-size=1000", "frontend"]
       ports:
         - "8080:8080"
       networks:
@@ -11,8 +11,8 @@ services:
       restart: on-failure
 
     hotrod-route:
-      image: marioscrock/hotrod
-      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "route"]
+      image: marioscrock/hotrod:latest
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "--fix-route-calc-delay=1ms", "route"]
       ports:
         - "8083:8083"
       restart: on-failure
@@ -22,8 +22,8 @@ services:
         - hotrod-frontend
 
     hotrod-customer:
-      image: marioscrock/hotrod
-      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "customer"]
+      image: marioscrock/hotrod:latest
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "--fix-db-query-delay=1ms", "--fix-disable-db-conn-mutex", "customer"]
       ports:
         - "8081:8081"
       restart: on-failure
@@ -33,8 +33,8 @@ services:
         - hotrod-frontend
 
     hotrod-driver:
-      image: marioscrock/hotrod
-      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "driver"]
+      image: marioscrock/hotrod:latest
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "--fix-redis-get-delay=1ms", "--fix-redis-find-delay=1ms", "driver"]
       ports:
         - "8082:8082"
       restart: on-failure
