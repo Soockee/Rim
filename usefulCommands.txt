@@ -48,7 +48,11 @@ make install
 cd examples/hotrod
 go run ./main.go all
 
-GO
+STATIK
+cd Path/To/ServiceUsingStatikFolder
+statik -src=/path/to/your/project/public
+
+GO BINDATA
 cd /Users/Mario/go/src/github.com/jaegertracing/jaeger/examples/hotrod/services/frontend/
 cd /Users/Mario/go/src/github.com/MakeRequests/services/frontend
 go-bindata-assetfs -ignore web_assets/.DS_Store -pkg frontend -o bindata_assetfs.go web_assets/...
@@ -65,6 +69,10 @@ show databases
 use telegraf
 show measurements
 docker-compose down --volumes
+
+METRICS
+JAEGER AGENT spans submitted -> http://localhost:5778/metrics
+JAEGER COLLECTOR spans dropped -> http://localhost:14268/metrics
 
 PREVIOUS DOCKER FILE - FOR JAEGER AGENT - VERSION
 

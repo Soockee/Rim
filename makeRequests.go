@@ -5,7 +5,7 @@ package main
 
 import (
   "fmt"
-  "io/ioutil"
+//"io/ioutil"
   "math"
   "math/rand"
   "net/http"
@@ -26,14 +26,15 @@ func startMakeRequests(wg *sync.WaitGroup, delay float64, url string) {
   client := myClient
   rand := strconv.FormatFloat(rand.Float64(), 'f', 16, 64)
   urlComplete := url + "&nonse=" + rand
-  fmt.Println(rand)
+  //fmt.Println(rand)
   req, err := http.NewRequest("GET", urlComplete, nil)
   if err != nil {
           panic(fmt.Sprintf("Got error: %v", err))
   }
   req.Header.Set("jaeger-baggage", "session='1107', request='1107-94'")
-  resp, _ := client.Do(req)
+  client.Do(req)
 
+  /*
   defer resp.Body.Close()
 
   if resp.StatusCode == http.StatusOK {
@@ -41,6 +42,7 @@ func startMakeRequests(wg *sync.WaitGroup, delay float64, url string) {
   bodyString := string(bodyBytes)
   fmt.Println(bodyString)
   }
+  */
 
   wg.Done()
 
