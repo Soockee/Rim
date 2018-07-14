@@ -35,6 +35,10 @@ docker rm `docker ps --no-trunc -aq`
 BASH
 docker exec -it <containerIdOrName> bash
 
+DETACHED DOCKER-COMPOSE
+docker-compose up -d
+docker logs -t -f <container-name>
+
 HOTROD
 mkdir -p $GOPATH/src/github.com/jaegertracing
 cd $GOPATH/src/github.com/jaegertracing
