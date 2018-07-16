@@ -19,7 +19,7 @@ var myClient *http.Client;
 var MAX_IDLE_CONNS = 1000;
 var MAX_IDLE_CONNS_PER_HOST = 1000;
 
-func startMakeRequests(wg *sync.WaitGroup, delay float64, url string) {
+func startMakeRequests(wg *sync.WaitGroup, delay float64, url string, i int) {
   
   time.Sleep(time.Second * time.Duration(delay/1000))
 
@@ -31,12 +31,17 @@ func startMakeRequests(wg *sync.WaitGroup, delay float64, url string) {
   if err != nil {
           panic(fmt.Sprintf("Got error: %v", err))
   }
-  req.Header.Set("jaeger-baggage", "session='1107', request='1107-94'")
-  client.Do(req)
+  req.Header.Set("jaeger-baggage",
+   "session='1107', request='1107-" + strconv.Itoa(i) + "'")
+  resp, _ := client.Do(req)
 
-  /*
-  defer resp.Body.Close()
+  if resp != nil {
+    resp.Body.Close()
+  } else {
+    fmt.Println("No response")
+  }
 
+  /* DEBUG
   if resp.StatusCode == http.StatusOK {
   bodyBytes, _ := ioutil.ReadAll(resp.Body)
   bodyString := string(bodyBytes)
@@ -66,12 +71,12 @@ func makeRequests(times []float64, url string) {
 
   myClient = &http.Client{Transport: &defaultTransport}
 
-  for _, v := range times {
+  for i, v := range times {
     syscall.Gettimeofday(&tv)
     tw := math.Round(v)
     fmt.Println("GET request " + strconv.FormatInt(int64(tv.Sec)*1e3 + int64(tv.Usec)/1e3 + int64(tw), 10))
     wg.Add(1)
-    go startMakeRequests(&wg, v, url)
+    go startMakeRequests(&wg, v, url, i)
   }
 
   wg.Wait()
