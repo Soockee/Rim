@@ -20,7 +20,11 @@ docker swarm leave --force
 REFER to HOST IP ADDRESS (Not working on if Linux host)
 host.docker.internal
 
-cd /Users/Mario/eclipse-workspace/jaeger-java-collector/jaeger 
+MULTIPLE INSTANCES
+docker-compose -f hotrod-docker-compose.yml -p hotrod1 up
+docker-compose -f hotrod-docker-compose2.yml -p hotrod2 up
+
+cd /Users/Mario/eclipse-workspace/kaiju-collector/jaeger  
 docker-compose -f jaeger-docker-compose.yml up
 
 cd $GOPATH/src/github.com/MakeRequests
