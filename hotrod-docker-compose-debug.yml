@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+    hotrod-frontend:
+      image: marioscrock/hotrod:latest
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "--fix-route-worker-pool-size=1000", "frontend"]
+      ports:
+        - "8080:8080"
+      networks:
+        - hotrod-net
+        - jaeger_jaeger-net
+      restart: on-failure
+
+    hotrod-route:
+      image: marioscrock/hotrod:latest
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "--fix-route-calc-delay=1ms", "route"]
+      restart: on-failure
+      networks:
+        - hotrod-net
+        - jaeger_jaeger-net
+      depends_on:
+        - hotrod-frontend
+
+    hotrod-customer:
+      image: marioscrock/hotrod:latest
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "--fix-db-query-delay=1ms", "--fix-disable-db-conn-mutex", "customer"]
+      restart: on-failure
+      networks:
+        - hotrod-net
+        - jaeger_jaeger-net
+      depends_on:
+        - hotrod-frontend
+
+    hotrod-driver:
+      image: marioscrock/hotrod:latest
+      command: ["./main", "--jaeger-agent.host-port=jaeger-agent:6831", "--fix-redis-get-delay=1ms", "--fix-redis-find-delay=1ms", "driver"]
+      restart: on-failure
+      networks:
+        - hotrod-net
+        - jaeger_jaeger-net
+      depends_on:
+        - hotrod-frontend
+
+    # telegraf:
+    #   image: "telegraf:latest"
+    #   networks:
+    #     - hotrod-net
+    #     - jaeger_jaeger-net
+    #   volumes:
+    #     - ./etc/telegraf:/etc/telegraf
+    #     #To enable [inputs.docker] within a container
+    #     - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  hotrod-net:
+    driver: bridge
+  jaeger_jaeger-net:
+    external: true
