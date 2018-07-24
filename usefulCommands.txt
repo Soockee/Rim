@@ -43,6 +43,10 @@ DETACHED DOCKER-COMPOSE
 docker-compose up -d
 docker logs -t -f <container-name>
 
+JUPYTER
+cd /Users/Mario/eclipse-workspace/kaiju-collector/jupyter
+docker run --rm -p 10000:8888 -e JUPYTER_LAB_ENABLE=yes -v "$PWD":/home/jovyan/work jupyter/datascience-notebook:e5c5a7d3e52d
+
 HOTROD
 mkdir -p $GOPATH/src/github.com/jaegertracing
 cd $GOPATH/src/github.com/jaegertracing
