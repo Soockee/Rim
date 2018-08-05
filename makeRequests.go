@@ -16,8 +16,8 @@ import (
 )
 
 var myClient *http.Client;
-var MAX_IDLE_CONNS = 1000;
-var MAX_IDLE_CONNS_PER_HOST = 1000;
+var MAX_IDLE_CONNS = 5000;
+var MAX_IDLE_CONNS_PER_HOST = 5000;
 
 func startMakeRequests(wg *sync.WaitGroup, delay float64, url string, i int) {
   
@@ -53,7 +53,7 @@ func startMakeRequests(wg *sync.WaitGroup, delay float64, url string, i int) {
 
 }
 
-func makeRequests(times []float64, url string) {
+func makeRequests(times []float64, urls []string) {
 
   var tv syscall.Timeval
   var wg sync.WaitGroup
@@ -76,7 +76,7 @@ func makeRequests(times []float64, url string) {
     tw := math.Round(v)
     fmt.Println("GET request " + strconv.FormatInt(int64(tv.Sec)*1e3 + int64(tv.Usec)/1e3 + int64(tw), 10))
     wg.Add(1)
-    go startMakeRequests(&wg, v, url, i)
+    go startMakeRequests(&wg, v, urls[i % len(urls)], i)
   }
 
   wg.Wait()
