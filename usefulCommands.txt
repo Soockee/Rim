@@ -43,6 +43,10 @@ DETACHED DOCKER-COMPOSE
 docker-compose up -d
 docker logs -t -f <container-name>
 
+PYTHON
+cd /Applications/Python\ 3.5/IDLE.app/Contents/MacOS && ./Python /Users/Mario/eclipse-workspace/kaiju-collector/jupyter/jaegerTiming.py & ./Python /Users/Mario/eclipse-workspace/kaiju-collector/jupyter/kaijuTiming.py
+
+
 JUPYTER
 cd /Users/Mario/eclipse-workspace/kaiju-collector/jupyter
 docker run --rm -p 10000:8888 -e JUPYTER_LAB_ENABLE=yes -v "$PWD":/home/jovyan/work jupyter/datascience-notebook:e5c5a7d3e52d
