@@ -22,7 +22,18 @@ host.docker.internal
 
 MULTIPLE INSTANCES
 docker-compose -f hotrod-docker-compose.yml -p hotrod1 up
-docker-compose -f hotrod-docker-compose2.yml -p hotrod2 up
+
+export [variable-name]=value
+unset [variabe-name]
+
+${FIX_ROUTE_WORKER_POOL_SIZE:---fix-route-worker-pool-size=1000}
+${FIX_ROUTE_CALC_DELAY:---fix-route-calc-delay=1ms}
+${FIX_DB_QUERY_DELAY:---fix-db-query-delay=1ms}
+${FIX_DISABLE_DB_CONN_MUTEX:---fix-disable-db-conn-mutex}
+${FIX_REDIS_GET_DELAY:---fix-redis-get-delay=1ms}
+${FIX_REDIS_FIND_DELAY:---fix-redis-find-delay=1ms}
+
+HOST_PORT_FRONTEND=8081 TELEGRAM_CONF_FILE=".etc/telegraf/others" docker-compose -f hotrod-docker-compose.yml -p hotrod2 up
 
 cd /Users/Mario/eclipse-workspace/kaiju-collector/jaeger  
 docker-compose -f jaeger-docker-compose.yml up
