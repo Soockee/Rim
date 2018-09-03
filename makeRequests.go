@@ -18,6 +18,8 @@ import (
 var myClient *http.Client;
 var MAX_IDLE_CONNS = 5000;
 var MAX_IDLE_CONNS_PER_HOST = 5000;
+var sessions = []string{"1107", "1812", "1208", "2012"};
+
 
 func startMakeRequests(wg *sync.WaitGroup, delay float64, url string, i int) {
   
@@ -31,8 +33,9 @@ func startMakeRequests(wg *sync.WaitGroup, delay float64, url string, i int) {
   if err != nil {
           panic(fmt.Sprintf("Got error: %v", err))
   }
+  session := sessions[i % len(sessions)]
   req.Header.Set("jaeger-baggage",
-   "session='1107', request='1107-" + strconv.Itoa(i) + "'")
+   "session=" + session + ", request=" + session + "-" + strconv.Itoa(i))
   resp, _ := client.Do(req)
 
   if resp != nil {
