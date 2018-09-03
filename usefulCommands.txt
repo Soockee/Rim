@@ -11,6 +11,10 @@ BUILD HOTROD IMAGES
 cd $GOPATH/src
 docker build --file github.com/MakeRequests/Dockerfile --no-cache -t marioscrock/hotrod .
 
+BUILD HOTROD with AGENT
+cd /Users/Mario/go/src/github.com/jaegertracing
+docker build --no-cache -t marioscrock/hotrod-jaeger-agent .
+
 docker swarm init
 docker stack deploy -c jaeger-docker-compose.yml <service-name>
 
@@ -33,7 +37,7 @@ ${FIX_DISABLE_DB_CONN_MUTEX:---fix-disable-db-conn-mutex}
 ${FIX_REDIS_GET_DELAY:---fix-redis-get-delay=1ms}
 ${FIX_REDIS_FIND_DELAY:---fix-redis-find-delay=1ms}
 
-HOST_PORT_FRONTEND=8081 TELEGRAM_CONF_FILE=".etc/telegraf/others" docker-compose -f hotrod-docker-compose.yml -p hotrod2 up
+HOST_PORT_FRONTEND=8081 TELEGRAM_CONF_FILE="./etc/telegraf/others" docker-compose -f hotrod-docker-compose.yml -p hotrod2 up
 
 cd /Users/Mario/eclipse-workspace/kaiju-collector/jaeger  
 docker-compose -f jaeger-docker-compose.yml up
