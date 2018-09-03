@@ -19,7 +19,10 @@ import (
 	"expvar"
 	"time"
 
+	"go.uber.org/zap"
+
 	"github.com/opentracing/opentracing-go"
+	"github.com/MakeRequests/pkg/log"
 )
 
 var routeCalcByCustomer = expvar.NewMap("route.calc.by.customer.sec")
@@ -33,7 +36,7 @@ var stats = []struct {
 	{routeCalcBySession, "session"},
 }
 
-func updateCalcStats(ctx context.Context, delay time.Duration) {
+func updateCalcStats(ctx context.Context, logger log.Factory, delay time.Duration) {
 	span := opentracing.SpanFromContext(ctx)
 	if span == nil {
 		return
@@ -43,6 +46,7 @@ func updateCalcStats(ctx context.Context, delay time.Duration) {
 		key := span.BaggageItem(s.baggage)
 		if key != "" {
 			s.expvar.AddFloat(key, delaySec)
+			logger.For(ctx).Info("RouteCalc", zap.Float64("time", delaySec), zap.String("key", key))
 		}
 	}
 }

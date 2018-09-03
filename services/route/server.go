@@ -85,7 +85,7 @@ func (s *Server) route(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := computeRoute(ctx, pickup, dropoff)
+	response := computeRoute(ctx, s.logger, pickup, dropoff)
 
 	data, err := json.Marshal(response)
 	if httperr.HandleError(w, err, http.StatusInternalServerError) {
@@ -97,10 +97,10 @@ func (s *Server) route(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-func computeRoute(ctx context.Context, pickup, dropoff string) *Route {
+func computeRoute(ctx context.Context, logger log.Factory, pickup, dropoff string) *Route {
 	start := time.Now()
 	defer func() {
-		updateCalcStats(ctx, time.Since(start))
+		updateCalcStats(ctx, logger, time.Since(start))
 	}()
 
 	// Simulate expensive calculation
