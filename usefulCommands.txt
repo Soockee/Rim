@@ -24,6 +24,10 @@ docker swarm leave --force
 REFER to HOST IP ADDRESS (Not working on if Linux host)
 host.docker.internal
 
+PUSH IMAGE DOCKERHUB
+$ docker tag local-image:tagname reponame:tagname
+$ docker push reponame:tagname
+
 MULTIPLE INSTANCES
 docker-compose -f hotrod-docker-compose.yml -p hotrod1 up
 
