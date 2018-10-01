@@ -4,8 +4,11 @@ go build main.go
 
 docker build -t marioscrock/jaeger-agent .
 
-cd /Users/Mario/eclipse-workspace/jaeger-java-collector
-docker build -t marioscrock/jaeger-java-collector .
+BUILD KAIJU
+cd /Users/Mario/eclipse-workspace/kaiju-collector
+docker build --no-cache -t marioscrock/kaiju-collector .
+docker tag marioscrock/kaiju-collector:latest marioscrock/kaiju:kaiju-collector
+docker push marioscrock/kaiju:kaiju-collector
 
 BUILD HOTROD IMAGES
 cd $GOPATH/src
