@@ -1,8 +1,24 @@
 USEFUL COMMANDS
 
-go build main.go
+LAUNCH JAEGER - KAIJU
+cd /Users/Mario/eclipse-workspace/kaiju-collector/jaeger
+docker-compose -f jaeger-docker-compose.yml up
 
-docker build -t marioscrock/jaeger-agent .
+LAUNCH HOTROD
+cd /Users/Mario/go/src/github.com/MakeRequests
+docker-compose -f hotrod-docker-compose.yml -p hotrod1 up
+
+export [variable-name]=value
+unset [variabe-name]
+
+${FIX_ROUTE_WORKER_POOL_SIZE:---fix-route-worker-pool-size=1000}
+${FIX_ROUTE_CALC_DELAY:---fix-route-calc-delay=1ms}
+${FIX_DB_QUERY_DELAY:---fix-db-query-delay=1ms}
+${FIX_DISABLE_DB_CONN_MUTEX:---fix-disable-db-conn-mutex}
+${FIX_REDIS_GET_DELAY:---fix-redis-get-delay=1ms}
+${FIX_REDIS_FIND_DELAY:---fix-redis-find-delay=1ms}
+
+HOST_PORT_FRONTEND=8081 TELEGRAM_CONF_FILE="./etc/telegraf/others" docker-compose -f hotrod-docker-compose.yml -p hotrod2 up
 
 BUILD KAIJU
 cd /Users/Mario/eclipse-workspace/kaiju-collector
@@ -18,39 +34,12 @@ BUILD HOTROD with AGENT
 cd /Users/Mario/go/src/github.com/jaegertracing
 docker build --no-cache -t marioscrock/hotrod-jaeger-agent .
 
-docker swarm init
-docker stack deploy -c jaeger-docker-compose.yml <service-name>
-
-docker stack rm <service-name>
-docker swarm leave --force
-
 REFER to HOST IP ADDRESS (Not working on if Linux host)
 host.docker.internal
 
 PUSH IMAGE DOCKERHUB
 $ docker tag local-image:tagname reponame:tagname
 $ docker push reponame:tagname
-
-MULTIPLE INSTANCES
-docker-compose -f hotrod-docker-compose.yml -p hotrod1 up
-
-export [variable-name]=value
-unset [variabe-name]
-
-${FIX_ROUTE_WORKER_POOL_SIZE:---fix-route-worker-pool-size=1000}
-${FIX_ROUTE_CALC_DELAY:---fix-route-calc-delay=1ms}
-${FIX_DB_QUERY_DELAY:---fix-db-query-delay=1ms}
-${FIX_DISABLE_DB_CONN_MUTEX:---fix-disable-db-conn-mutex}
-${FIX_REDIS_GET_DELAY:---fix-redis-get-delay=1ms}
-${FIX_REDIS_FIND_DELAY:---fix-redis-find-delay=1ms}
-
-HOST_PORT_FRONTEND=8081 TELEGRAM_CONF_FILE="./etc/telegraf/others" docker-compose -f hotrod-docker-compose.yml -p hotrod2 up
-
-cd /Users/Mario/eclipse-workspace/kaiju-collector/jaeger  
-docker-compose -f jaeger-docker-compose.yml up
-
-cd $GOPATH/src/github.com/MakeRequests
-docker-compose -f hotrod-docker-compose.yml up
 
 REMOVE intermediate images for multi-stage builds
 docker rmi $(docker images | grep "^<none>" | awk "{print $3}") [--force]
@@ -67,7 +56,6 @@ docker logs -t -f <container-name>
 
 PYTHON
 cd /Applications/Python\ 3.5/IDLE.app/Contents/MacOS && ./Python /Users/Mario/eclipse-workspace/kaiju-collector/jupyter/jaegerTiming.py & ./Python /Users/Mario/eclipse-workspace/kaiju-collector/jupyter/kaijuTiming.py
-
 
 JUPYTER
 cd /Users/Mario/eclipse-workspace/kaiju-collector/jupyter
@@ -110,7 +98,7 @@ JAEGER COLLECTOR spans dropped -> http://localhost:14268/metrics
 
 PREVIOUS DOCKER FILE - FOR JAEGER AGENT - VERSION
 
-# RUN only
+#RUN only
 #FROM iron/go
 #EXPOSE 5775/udp 6831/udp 6832/udp 5778
 #WORKDIR /app
@@ -118,7 +106,7 @@ PREVIOUS DOCKER FILE - FOR JAEGER AGENT - VERSION
 #COPY main /app/
 #ENTRYPOINT ["./main"] # --collector.host-port=jaeger-collector:14267"]
 
-# CROSS-COMPILE IMAGE
+#CROSS-COMPILE IMAGE
 #FROM iron/go:dev
 #EXPOSE 5775/udp 6831/udp 6832/udp 5778
 #WORKDIR /app
