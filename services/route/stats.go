@@ -42,11 +42,11 @@ func updateCalcStats(ctx context.Context, logger log.Factory, delay time.Duratio
 		return
 	}
 	delaySec := float64(delay/time.Millisecond) / 1000.0
+	logger.For(ctx).Info("RouteCalc", zap.Float64("time", delaySec))
 	for _, s := range stats {
 		key := span.BaggageItem(s.baggage)
 		if key != "" {
 			s.expvar.AddFloat(key, delaySec)
-			logger.For(ctx).Info("RouteCalc", zap.Float64("time", delaySec), zap.String("key", key))
 		}
 	}
 }
