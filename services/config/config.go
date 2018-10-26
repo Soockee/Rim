@@ -44,13 +44,13 @@ var (
 	RedisFindDelay = 20 * time.Millisecond
 
 	// RedisFindDelayStdDev is standard deviation.
-	RedisFindDelayStdDev = RedisFindDelay / 4
+	RedisFindDelayStdDev = RedisFindDelay / 10
 
 	// RedisGetDelay is how long retrieving a driver record takes.
 	RedisGetDelay = 10 * time.Millisecond
 
 	// RedisGetDelayStdDev is standard deviation
-	RedisGetDelayStdDev = RedisGetDelay / 4
+	RedisGetDelayStdDev = RedisGetDelay / 10
 
 	// 'route' service
 
@@ -58,5 +58,5 @@ var (
 	RouteCalcDelay = 50 * time.Millisecond
 
 	// RouteCalcDelayStdDev is standard deviation
-	RouteCalcDelayStdDev = RouteCalcDelay / 4
+	RouteCalcDelayStdDev = RouteCalcDelay / 10
 )

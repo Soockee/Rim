@@ -92,17 +92,17 @@ func onInitialize() {
 	if config.RedisFindDelay != fixRedisFindDelay {
 		logger.Info("fix: overriding Redis find delay", zap.Duration("old", config.RedisFindDelay), zap.Duration("new", fixRedisFindDelay))
 		config.RedisFindDelay = fixRedisFindDelay
-		config.RedisFindDelayStdDev = fixRedisFindDelay / 4
+		config.RedisFindDelayStdDev = fixRedisFindDelay / 10
 	}
 	if config.RedisGetDelay != fixRedisGetDelay {
 		logger.Info("fix: overriding Redis get delay", zap.Duration("old", config.RedisGetDelay), zap.Duration("new", fixRedisGetDelay))
 		config.RedisGetDelay = fixRedisGetDelay
-		config.RedisGetDelayStdDev = fixRedisGetDelay / 4
+		config.RedisGetDelayStdDev = fixRedisGetDelay / 10
 	}
 	if config.RouteCalcDelay != fixRouteCalcDelay {
 		logger.Info("fix: overriding route calc delay", zap.Duration("old", config.RouteCalcDelay), zap.Duration("new", fixRouteCalcDelay))
 		config.RouteCalcDelay = fixRouteCalcDelay
-		config.RouteCalcDelayStdDev = fixRouteCalcDelay / 4
+		config.RouteCalcDelayStdDev = fixRouteCalcDelay / 10
 	}
 	if fixDBConnDisableMutex {
 		logger.Info("fix: disabling db connection mutex")

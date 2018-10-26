@@ -33,6 +33,8 @@ docker build --file github.com/MakeRequests/Dockerfile --no-cache -t marioscrock
 BUILD HOTROD with AGENT
 cd /Users/Mario/go/src/github.com/jaegertracing
 docker build --no-cache -t marioscrock/hotrod-jaeger-agent .
+docker tag marioscrock/hotrod-jaeger-agent:latest marioscrock/kaiju:hotrod-jaeger-agent
+docker push marioscrock/kaiju:hotrod-jaeger-agent
 
 REFER to HOST IP ADDRESS (Not working on if Linux host)
 host.docker.internal
@@ -49,6 +51,7 @@ docker rm `docker ps --no-trunc -aq`
 
 BASH
 docker exec -it <containerIdOrName> bash
+docker exec -it <containerIdOrName> /bin/sh
 
 DETACHED DOCKER-COMPOSE
 docker-compose up -d
