@@ -3,10 +3,10 @@
 
 FROM golang:alpine AS build-env
 WORKDIR /app
-ENV SRC_DIR=/go/src/github.com/MakeRequests/
+ENV SRC_DIR=/go/src/github.com/Rim/
 
 # Add the source code:
-ADD github.com/MakeRequests/ $SRC_DIR
+ADD github.com/Rim/ $SRC_DIR
 
 # Add DEPENDENCIES 
 ADD /github.com/apache/ /go/src/github.com/apache/
