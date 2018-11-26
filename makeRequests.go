@@ -16,8 +16,8 @@ import (
 )
 
 var myClient *http.Client;
-var MAX_IDLE_CONNS = 5000;
-var MAX_IDLE_CONNS_PER_HOST = 5000;
+var MAX_IDLE_CONNS = 10000;
+var MAX_IDLE_CONNS_PER_HOST = 10000;
 var sessions = []string{"1107", "1812", "1208", "2012"};
 
 

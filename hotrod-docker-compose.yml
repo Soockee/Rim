@@ -2,24 +2,23 @@ version: '3'
 
 services:
     hotrod-frontend:
-      image: marioscrock/hotrod-jaeger-agent:latest #marioscrock/hotrod:latest
+      image: marioscrock/kaiju:hotrod-jaeger-agent
       environment:
         KAIJU_ADDRESS: "${KAIJU_ADDRESS:-kaiju-collector:2042}"
-        JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=300000" #To avoid dropping spans
+        JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=500000" #To avoid dropping spans
         HOTROD: "--jaeger-agent.host-port=hotrod-frontend:6831 ${FIX_ROUTE_WORKER_POOL_SIZE:---fix-route-worker-pool-size=1000} frontend"
       command: sh run.sh
       ports:
         - "${HOST_PORT_FRONTEND:-8080}:8080"
       networks:
         - hotrod-net
-        - jaeger_jaeger-net
       restart: on-failure
 
     hotrod-route:
-      image: marioscrock/hotrod-jaeger-agent:latest #marioscrock/hotrod:latest
+      image: marioscrock/kaiju:hotrod-jaeger-agent
       environment:
         KAIJU_ADDRESS: "${KAIJU_ADDRESS:-kaiju-collector:2042}"
-        JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=300000" #To avoid dropping spans
+        JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=500000" #To avoid dropping spans
         HOTROD: "--jaeger-agent.host-port=hotrod-route:6831 ${FIX_ROUTE_CALC_DELAY:---fix-route-calc-delay=1ms} route"
       command: sh run.sh
       # ports:
@@ -27,15 +26,14 @@ services:
       restart: on-failure
       networks:
         - hotrod-net
-        - jaeger_jaeger-net
       depends_on:
         - hotrod-frontend
 
     hotrod-customer:
-      image: marioscrock/hotrod-jaeger-agent:latest #marioscrock/hotrod:latest
+      image: marioscrock/kaiju:hotrod-jaeger-agent
       environment:
         KAIJU_ADDRESS: "${KAIJU_ADDRESS:-kaiju-collector:2042}"
-        JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=300000" #To avoid dropping spans
+        JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=500000" #To avoid dropping spans
         HOTROD: "--jaeger-agent.host-port=hotrod-customer:6831 ${FIX_DB_QUERY_DELAY:---fix-db-query-delay=1ms} ${FIX_DISABLE_DB_CONN_MUTEX:---fix-disable-db-conn-mutex} customer"
       command: sh run.sh
       # ports:
@@ -43,15 +41,14 @@ services:
       restart: on-failure
       networks:
         - hotrod-net
-        - jaeger_jaeger-net
       depends_on:
         - hotrod-frontend
 
     hotrod-driver:
-      image: marioscrock/hotrod-jaeger-agent:latest #marioscrock/hotrod:latest
+      image: marioscrock/kaiju:hotrod-jaeger-agent
       environment:
         KAIJU_ADDRESS: "${KAIJU_ADDRESS:-kaiju-collector:2042}"
-        JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=300000" #To avoid dropping spans
+        JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=500000" #To avoid dropping spans
         HOTROD: "--jaeger-agent.host-port=hotrod-driver:6831 ${FIX_REDIS_GET_DELAY:---fix-redis-get-delay=1ms} ${FIX_REDIS_FIND_DELAY:---fix-redis-find-delay=1ms} driver"
       command: sh run.sh
       # ports:
@@ -59,22 +56,22 @@ services:
       restart: on-failure
       networks:
         - hotrod-net
-        - jaeger_jaeger-net
       depends_on:
         - hotrod-frontend
 
     telegraf:
       image: "telegraf:latest"
+      environment:
+        HOTROD_INSTANCE: "${HOTROD_INSTANCE:-hotrod}"
+        INFLUX_ADDRESS: "${INFLUX_ADDRESS:-http://10.0.0.28:8086}"
+        SOCKET_WRITER_ADDRESS: "${SOCKET_WRITER_ADDRESS:-tcp://10.0.0.24:9876}"
       networks:
         - hotrod-net
-        - jaeger_jaeger-net
       volumes:
-        - ${TELEGRAF_CONF_FILE:-./etc/telegraf}:/etc/telegraf
+        - ${TELEGRAF_CONF_FILE:-./etc/telegraf/}:/etc/telegraf
         #To enable [inputs.docker] within a container
         - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   hotrod-net:
     driver: bridge
-  jaeger_jaeger-net:
-    external: true
