@@ -22,7 +22,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/opentracing/opentracing-go"
-	"github.com/MakeRequests/pkg/log"
+	"github.com/Rim/pkg/log"
 )
 
 var routeCalcByCustomer = expvar.NewMap("route.calc.by.customer.sec")

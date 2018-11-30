@@ -22,9 +22,9 @@ import (
 	"github.com/uber/jaeger-lib/metrics"
 	"go.uber.org/zap"
 
-	"github.com/MakeRequests/pkg/httperr"
-	"github.com/MakeRequests/pkg/log"
-	"github.com/MakeRequests/pkg/tracing"
+	"github.com/Rim/pkg/httperr"
+	"github.com/Rim/pkg/log"
+	"github.com/Rim/pkg/tracing"
 )
 
 // Server implements Customer service

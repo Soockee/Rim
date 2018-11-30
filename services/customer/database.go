@@ -22,10 +22,10 @@ import (
 	tags "github.com/opentracing/opentracing-go/ext"
 	"go.uber.org/zap"
 
-	"github.com/MakeRequests/pkg/delay"
-	"github.com/MakeRequests/pkg/log"
-	"github.com/MakeRequests/pkg/tracing"
-	"github.com/MakeRequests/services/config"
+	"github.com/Rim/pkg/delay"
+	"github.com/Rim/pkg/log"
+	"github.com/Rim/pkg/tracing"
+	"github.com/Rim/services/config"
 )
 
 // database simulates Customer repository implemented on top of an SQL database

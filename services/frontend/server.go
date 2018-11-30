@@ -22,10 +22,10 @@ import (
 	"github.com/rakyll/statik/fs"
 	"go.uber.org/zap"
 
-	"github.com/MakeRequests/pkg/httperr"
-	"github.com/MakeRequests/pkg/log"
-	"github.com/MakeRequests/pkg/tracing"
-	_ "github.com/MakeRequests/services/frontend/statik" // init static assets
+	"github.com/Rim/pkg/httperr"
+	"github.com/Rim/pkg/log"
+	"github.com/Rim/pkg/tracing"
+	_ "github.com/Rim/services/frontend/statik" // init static assets
 )
 
 // Server implements jaeger-demo-frontend service

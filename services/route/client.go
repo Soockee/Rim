@@ -23,8 +23,8 @@ import (
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
 
-	"github.com/MakeRequests/pkg/log"
-	"github.com/MakeRequests/pkg/tracing"
+	"github.com/Rim/pkg/log"
+	"github.com/Rim/pkg/tracing"
 )
 
 // Client is a remote client that implements route.Interface

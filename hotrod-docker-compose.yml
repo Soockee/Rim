@@ -2,7 +2,7 @@ version: '3'
 
 services:
     hotrod-frontend:
-      image: marioscrock/kaiju:hotrod-jaeger-agent
+      image: marioscrock/rim:hotrod-jaeger-agent
       environment:
         KAIJU_ADDRESS: "${KAIJU_ADDRESS:-kaiju-collector:2042}"
         JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=500000" #To avoid dropping spans
@@ -15,7 +15,7 @@ services:
       restart: on-failure
 
     hotrod-route:
-      image: marioscrock/kaiju:hotrod-jaeger-agent
+      image: marioscrock/rim:hotrod-jaeger-agent
       environment:
         KAIJU_ADDRESS: "${KAIJU_ADDRESS:-kaiju-collector:2042}"
         JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=500000" #To avoid dropping spans
@@ -30,7 +30,7 @@ services:
         - hotrod-frontend
 
     hotrod-customer:
-      image: marioscrock/kaiju:hotrod-jaeger-agent
+      image: marioscrock/rim:hotrod-jaeger-agent
       environment:
         KAIJU_ADDRESS: "${KAIJU_ADDRESS:-kaiju-collector:2042}"
         JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=500000" #To avoid dropping spans
@@ -45,7 +45,7 @@ services:
         - hotrod-frontend
 
     hotrod-driver:
-      image: marioscrock/kaiju:hotrod-jaeger-agent
+      image: marioscrock/rim:hotrod-jaeger-agent
       environment:
         KAIJU_ADDRESS: "${KAIJU_ADDRESS:-kaiju-collector:2042}"
         JAEGERAGENT: "--collector.host-port=${JAEGER_COLLECTOR_ADDRESS:-jaeger-collector:14267} --processor.jaeger-compact.server-queue-size=500000" #To avoid dropping spans

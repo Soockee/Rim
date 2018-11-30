@@ -21,9 +21,9 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 
-	"github.com/MakeRequests/pkg/log"
-	"github.com/MakeRequests/pkg/tracing"
-	"github.com/MakeRequests/services/customer"
+	"github.com/Rim/pkg/log"
+	"github.com/Rim/pkg/tracing"
+	"github.com/Rim/services/customer"
 )
 
 // customerCmd represents the customer command

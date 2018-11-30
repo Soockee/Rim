@@ -3,7 +3,7 @@
 package main
 
 import (
-	"github.com/MakeRequests/cmd"
+	"github.com/Rim/cmd"
 )
 
 func main() {

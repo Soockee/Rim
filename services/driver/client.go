@@ -23,8 +23,8 @@ import (
 	"github.com/uber/tchannel-go/thrift"
 	"go.uber.org/zap"
 
-	"github.com/MakeRequests/pkg/log"
-	"github.com/MakeRequests/services/driver/thrift-gen/driver"
+	"github.com/Rim/pkg/log"
+	"github.com/Rim/services/driver/thrift-gen/driver"
 )
 
 // Client is a remote client that implements driver.Interface

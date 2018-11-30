@@ -26,7 +26,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/MakeRequests/services/config"
+	"github.com/Rim/services/config"
 )
 
 var (
