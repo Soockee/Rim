@@ -15,6 +15,7 @@
 package driver
 
 import (
+	"github.com/Rim/pkg/tracing"
 	"github.com/opentracing/opentracing-go"
 	"github.com/uber/jaeger-lib/metrics"
 	"github.com/uber/tchannel-go"
@@ -74,6 +75,7 @@ func (s *Server) Run() error {
 
 // FindNearest implements Thrift interface TChanDriver
 func (s *Server) FindNearest(ctx thrift.Context, location string) ([]*driver.DriverLocation, error) {
+	tracing.KubeTags(ctx)
 	s.logger.For(ctx).Info("Searching for nearby drivers", zap.String("location", location))
 	driverIDs := s.redis.FindDriverIDs(ctx, location)
 
