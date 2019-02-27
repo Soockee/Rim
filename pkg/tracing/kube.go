@@ -23,7 +23,7 @@ import (
 
 func KubeTags(ctx context.Context) {
 	span := opentracing.SpanFromContext(ctx)
-	span.SetTag("kube_node_name", os.Getenv("NODE_NAME"))
-	span.SetTag("kube_pod_name", os.Getenv("POD_NAME"))
-	span.SetTag("kube_pod_namespace", os.Getenv("POD_NAMESPACE"))
+	span.SetTag("kube.node_name", os.Getenv("NODE_NAME"))
+	span.SetTag("kube.pod_name", os.Getenv("POD_NAME"))
+	span.SetTag("kube.pod_namespace", os.Getenv("POD_NAMESPACE"))
 }
