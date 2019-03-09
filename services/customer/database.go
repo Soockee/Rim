@@ -79,6 +79,7 @@ func (d *database) Get(ctx context.Context, customerID string) (*Customer, error
 		span.SetTag("sql.query", "SELECT * FROM customer WHERE customer_id="+customerID)
 		defer span.Finish()
 		ctx = opentracing.ContextWithSpan(ctx, span)
+		tracing.KubeTags(ctx)
 	}
 
 	if !config.MySQLMutexDisabled {

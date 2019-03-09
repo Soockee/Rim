@@ -38,6 +38,7 @@ func (c *HTTPClient) GetJSON(ctx context.Context, endpoint string, url string, o
 	if err != nil {
 		return err
 	}
+	KubeTags(ctx)
 	req = req.WithContext(ctx)
 	req, ht := nethttp.TraceRequest(c.Tracer, req, nethttp.OperationName("HTTP GET: "+endpoint))
 	defer ht.Finish()

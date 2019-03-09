@@ -54,6 +54,7 @@ func (r *Redis) FindDriverIDs(ctx context.Context, location string) []string {
 		ext.SpanKindRPCClient.Set(span)
 		defer span.Finish()
 		ctx = opentracing.ContextWithSpan(ctx, span)
+		tracing.KubeTags(ctx)
 	}
 	// simulate RPC delay
 	delay.Sleep(config.RedisFindDelay, config.RedisFindDelayStdDev)
@@ -74,6 +75,7 @@ func (r *Redis) GetDriver(ctx context.Context, driverID string) (Driver, error) 
 		ext.SpanKindRPCClient.Set(span)
 		defer span.Finish()
 		ctx = opentracing.ContextWithSpan(ctx, span)
+		tracing.KubeTags(ctx)
 	}
 	// simulate RPC delay
 	delay.Sleep(config.RedisGetDelay, config.RedisGetDelayStdDev)
