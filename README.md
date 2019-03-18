@@ -10,7 +10,7 @@ This basic application offers the user the possibility to make only one type of 
 
 <p align="center"><img src="/dispatchSD.png" alt="Dispatch SD" width="600"></p>
 
-The four microservices are instrumented with the [OpenTracing API for GoLang](https://github.com/opentracing/opentracing-go) and the `Jaeger` tracer is configured to handle traces (sampling is not active). In order to exemplify the goal of distributed tracing some operations are intentionally misconfigured or not optimised: latencies of some operations are manually increased, some errors are randomly generated, and artificial bottlenecks are created.
+The four microservices are instrumented with the [OpenTracing API for GoLang](https://github.com/opentracing/opentracing-go) and the `Jaeger` tracer is configured to handle traces (sampling is not active). In order to exemplify the goal of distributed tracing some operations are intentionally misconfigured or not optimised: latencies of some operations are manually increased, some errors are randomly generated, and artificial bottlenecks are created (in red in the SD).
 
 We changed the networking configurations in HotR.O.D. to enable each service to run as a different process on a different machine and thus to enable containerization of services. We build a unique [Docker](https://docs.docker.com) image for HotR.O.D. that can be used to run separately each service and a [docker-compose](https://docs.docker.com/compose/) file to instantiate HotR.O.D. with each service running on a different container.
 To allow spawning more than one instance we made the docker-compose file configurable through environment variables. In this way it is possible to easily launch multiple instances of the application also on the same machine, reachable at different addresses and not clashing exploiting project namespace (`-p` option of `docker-compose`).
@@ -34,3 +34,8 @@ We decided to build a Javascript library so that it can be integrated with the U
 The UI provided allow to choose the clickable object to make requests on, or a _random_ selection (for each request made, between all clickable elements specified). Also, it allows to set a textual `seed` to initiate the random pseudo-generator to guarantee reproducibility. The default method to generate requests is to specify a _number of requests_ to be generated all at once. Otherwise, it is possible to select a distribution and provide parameters to determine how requests will be generated.
 
 Modern browsers allow only for a limited set of concurrent requests, therefore, to generate a higher number of requests, we also implement an option to generate a GoLang file `makeRequestsTimes.go` containing endpoint URLs and timing of requests to be executed. This file can be run together with the `makeRequests.go` file provided to generate a set of go-routines executing requests as specified through the graphical interface. Moreover, the file can be easily tuned to implement more complex logic in the execution of the load test and to target multiple instances of the application.
+
+## Deployment
+The `docker-compose` file provided in this repository uses a Docker image bounding the HotR.O.D. app and a customized `jaeger-agent` to enable the deployment of [Kaiju-TSP](https://github.com/marioscrock/Kaiju-TSP) and [Jaeger](https://github.com/jaegertracing/jaeger) to process traces sampled.
+
+<p align="center"><img src="/deployment.png" alt="Deployment" width="600"></p>
