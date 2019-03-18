@@ -23,7 +23,7 @@ HOTROD_INSTANCE="hotrod1" FIX_DB_QUERY_DELAY="--fix-db-query-delay=2ms" HOST_POR
 HOTROD_INSTANCE="hotrod2" HOST_PORT_FRONTEND=8090 docker-compose -f hotrod-docker-compose.yml -p hotrod2 up
 ```
 
-In this example, the instance `hotrod1v will have a simulated query delay in service `customer` slower than the default value (300 ms) of instance `hotrod2`. Since we do not allow to scale each service independently, we can ensure that each request sent to the endpoint `:8080/dispatch` will have the query delay configured for `hotrod1`, and each request sent to the endpoint `:8090/dispatch` will have the default query delay configured for `hotrod2`.
+In this example, the instance `hotrod1` will have a simulated query delay in service `customer` slower than the default value (300 ms) of instance `hotrod2`. Since we do not allow to scale each service independently, we can ensure that each request sent to the endpoint `:8080/dispatch` will have the query delay configured for `hotrod1`, and each request sent to the endpoint `:8090/dispatch` will have the default query delay configured for `hotrod2`.
 
 Rim also provides a way to generate requests on instances reproducibly and systematically. To this scope it uses:
 - a Javascript library [makerequests.js](https://github.com/marioscrock/makerequests.js) to generate in-browser load tests given a set of parameters,
